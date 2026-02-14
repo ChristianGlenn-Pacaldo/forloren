@@ -313,6 +313,7 @@
             box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
             transition: all 0.3s ease;
             z-index: 10000;
+            pointer-events: auto;
         }
 
         .music-control:hover {
@@ -332,6 +333,7 @@
 
         .music-icon {
             font-size: 1.5em;
+            user-select: none;
         }
 
         @media (max-width: 600px) {
@@ -433,40 +435,54 @@
         </div>
     </div>
 
-    <div class="music-control" onclick="toggleMusic()" title="Play/Pause Music">
-        <span class="music-icon" id="music-icon">🔇</span>
+    <div class="music-control" onclick="playMusic()" id="music-btn" title="Play Music">
+        <span class="music-icon" id="music-icon">🎵</span>
     </div>
-
-    <!-- Audio element - MUST be in same folder! -->
-    <audio id="bg-music" loop>
-        <source src="dandelion.mp3" type="audio/mpeg">
-    </audio>
 
     <script>
         let isPlaying = false;
-        const music = document.getElementById('bg-music');
-        const icon = document.getElementById('music-icon');
+        let audio = null;
 
-        // Set volume
-        music.volume = 0.5;
+        // Play music function - WORKS ON VERCEL!
+        function playMusic() {
+            const icon = document.getElementById('music-icon');
+            
+            if (!audio) {
+                // Create audio element dynamically
+                audio = new Audio();
+                audio.src = 'dandelion.mp3'; // Just the filename!
+                audio.loop = true;
+                audio.volume = 0.5;
+            }
 
-        // Music control - SIMPLIFIED AND WORKING!
-        function toggleMusic() {
             if (isPlaying) {
-                music.pause();
+                audio.pause();
                 icon.textContent = '🔇';
                 isPlaying = false;
             } else {
-                music.play()
+                audio.play()
                     .then(() => {
                         icon.textContent = '🎵';
                         isPlaying = true;
                         createMusicNotes();
                     })
-                    .catch(() => {
-                        alert('Click the music button again! Sometimes browsers need a second click. 🎵');
+                    .catch((e) => {
+                        console.log('Music will play on next click');
+                        // Try one more time
+                        setTimeout(() => {
+                            audio.play().then(() => {
+                                icon.textContent = '🎵';
+                                isPlaying = true;
+                                createMusicNotes();
+                            });
+                        }, 200);
                     });
             }
+        }
+
+        // Alias for compatibility
+        function toggleMusic() {
+            playMusic();
         }
 
         // Create floating music notes when playing
@@ -597,7 +613,7 @@
             }
         }
 
-        // Download receipt (as image simulation)
+        // Download receipt
         function downloadReceipt() {
             const girlfriendName = document.getElementById('girlfriend-name').value || 'My Love';
             const boyfriendName = document.getElementById('boyfriend-name').value || 'Your Valentine';
