@@ -313,16 +313,17 @@
             box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
             transition: all 0.3s ease;
             z-index: 10000;
-            pointer-events: auto;
+            pointer-events: auto !important;
         }
 
         .music-control:hover {
             transform: scale(1.1);
-            animation: wiggle 0.5s ease;
+            background: rgba(255, 182, 193, 0.9);
         }
 
         .music-control:active {
             transform: scale(0.95);
+            background: rgba(255, 105, 180, 0.9);
         }
 
         @keyframes wiggle {
@@ -334,6 +335,26 @@
         .music-icon {
             font-size: 1.5em;
             user-select: none;
+            pointer-events: none;
+        }
+
+        .music-status {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: #ff1493;
+            box-shadow: 0 3px 10px rgba(255, 105, 180, 0.3);
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .music-status.show {
+            opacity: 1;
         }
 
         @media (max-width: 600px) {
@@ -369,7 +390,7 @@
         }
 
         .music-note {
-            position: absolute;
+            position: fixed;
             font-size: 20px;
             animation: music-float 3s ease-in-out;
             pointer-events: none;
@@ -435,54 +456,87 @@
         </div>
     </div>
 
-    <div class="music-control" onclick="toggleMusic()" id="music-btn" title="Play Music">
+    <div class="music-status" id="music-status"></div>
+    <div class="music-control" id="music-btn">
         <span class="music-icon" id="music-icon">🎵</span>
     </div>
 
     <script>
         let isPlaying = false;
         let audio = null;
-        let audioInitialized = false;
 
-        // Initialize audio on first user interaction
-        function initAudio() {
+        // Create audio element
+        function setupAudio() {
             if (!audio) {
                 audio = new Audio();
-                // Try multiple possible paths for Vercel
-                audio.src = './dandelion.mp3'; // Same directory
                 audio.loop = true;
                 audio.volume = 0.5;
                 
-                // Preload the audio
-                audio.load();
+                // Try multiple paths
+                const paths = [
+                    'dandelion.mp3',
+                    './dandelion.mp3',
+                    '/dandelion.mp3'
+                ];
                 
-                // Add error handler
+                let pathIndex = 0;
+                
                 audio.addEventListener('error', function(e) {
-                    console.error('Audio error:', e);
-                    // Try alternative path
-                    audio.src = '/dandelion.mp3';
-                    audio.load();
+                    console.error('Audio load error for path:', paths[pathIndex], e);
+                    pathIndex++;
+                    if (pathIndex < paths.length) {
+                        audio.src = paths[pathIndex];
+                        audio.load();
+                    } else {
+                        showMusicStatus('Music file not found 😢');
+                    }
                 });
                 
-                audioInitialized = true;
+                audio.addEventListener('canplaythrough', function() {
+                    console.log('Audio ready to play!');
+                });
+                
+                // Set initial source
+                audio.src = paths[0];
+                audio.load();
             }
+            return audio;
         }
 
-        // Toggle music function
-        function toggleMusic() {
-            const icon = document.getElementById('music-icon');
+        // Show music status message
+        function showMusicStatus(message) {
+            const statusEl = document.getElementById('music-status');
+            statusEl.textContent = message;
+            statusEl.classList.add('show');
             
-            // Initialize audio on first click
-            if (!audioInitialized) {
-                initAudio();
+            setTimeout(() => {
+                statusEl.classList.remove('show');
+            }, 2000);
+        }
+
+        // Toggle music
+        function toggleMusic() {
+            console.log('Music button clicked!');
+            
+            const icon = document.getElementById('music-icon');
+            const musicBtn = document.getElementById('music-btn');
+            
+            // Visual feedback
+            musicBtn.style.animation = 'wiggle 0.5s ease';
+            setTimeout(() => {
+                musicBtn.style.animation = '';
+            }, 500);
+            
+            if (!audio) {
+                setupAudio();
             }
 
             if (isPlaying) {
                 audio.pause();
                 icon.textContent = '🔇';
                 isPlaying = false;
+                showMusicStatus('Music paused');
             } else {
-                // Attempt to play
                 const playPromise = audio.play();
                 
                 if (playPromise !== undefined) {
@@ -490,14 +544,15 @@
                         .then(() => {
                             icon.textContent = '🎵';
                             isPlaying = true;
+                            showMusicStatus('Playing music 🎵');
                             createMusicNotes();
                         })
                         .catch((error) => {
-                            console.log('Playback prevented:', error);
-                            // Show user-friendly message
+                            console.error('Playback error:', error);
+                            showMusicStatus('Click again to play 🎵');
                             icon.textContent = '🔇';
                             
-                            // Try again after a small delay
+                            // One more attempt
                             setTimeout(() => {
                                 audio.play()
                                     .then(() => {
@@ -505,14 +560,31 @@
                                         isPlaying = true;
                                         createMusicNotes();
                                     })
-                                    .catch(e => {
-                                        console.log('Still cannot play:', e);
-                                    });
-                            }, 100);
+                                    .catch(e => console.error('Still cannot play:', e));
+                            }, 500);
                         });
                 }
             }
         }
+
+        // Add click listener to music button
+        document.addEventListener('DOMContentLoaded', function() {
+            const musicBtn = document.getElementById('music-btn');
+            
+            musicBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleMusic();
+            });
+            
+            musicBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleMusic();
+            }, { passive: false });
+            
+            console.log('Music button listeners attached!');
+        });
 
         // Create floating music notes when playing
         function createMusicNotes() {
@@ -660,13 +732,6 @@
             noBtn.style.left = '0px';
             noBtn.style.top = '0px';
         });
-
-        // Initialize audio on any user interaction
-        document.addEventListener('click', function initOnClick() {
-            if (!audioInitialized) {
-                initAudio();
-            }
-        }, { once: true });
     </script>
 </body>
 </html>
