@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day Langging❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 50%, #ffd6eb 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .hearts-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(255, 105, 180, 0.6);
+            animation: float-up 8s infinite ease-in;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 40px 20px;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 50px 30px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #ff1493;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .message {
+            font-size: 1.2em;
+            color: #d6336c;
+            margin: 30px 0;
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        .question {
+            font-size: 1.5em;
+            color: #c71585;
+            margin: 40px 0 30px 0;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            position: relative;
+            min-height: 80px;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .yes-btn {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            color: white;
+            position: relative;
+            z-index: 100;
+        }
+
+        .yes-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(255, 20, 147, 0.4);
+        }
+
+        .no-btn {
+            background: linear-gradient(135deg, #ddd, #bbb);
+            color: #666;
+            position: absolute;
+            z-index: 50;
+        }
+
+        .playful-text {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5em;
+            color: #ff1493;
+            font-weight: bold;
+            animation: bounce 0.5s;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 15px;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+
+        .success-message {
+            animation: zoomIn 0.5s ease-out;
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .receipt {
+            background: linear-gradient(135deg, #ffe0f0, #fff5fa);
+            border: 3px dashed #ff69b4;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .receipt h2 {
+            color: #ff1493;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .receipt-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            align-items: center;
+        }
+
+        .receipt-label {
+            font-weight: bold;
+            color: #c71585;
+        }
+
+        .receipt input {
+            border: none;
+            background: transparent;
+            text-align: right;
+            font-size: 1em;
+            color: #d6336c;
+            font-family: 'Georgia', serif;
+            outline: none;
+            border-bottom: 2px solid #ffb6c1;
+            padding: 5px;
+            max-width: 200px;
+        }
+
+        .receipt-static {
+            color: #d6336c;
+        }
+
+        .signature {
+            margin-top: 20px;
+            font-style: italic;
+            color: #ff1493;
+            font-size: 1.2em;
+        }
+
+        .download-btn {
+            margin-top: 20px;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255, 20, 147, 0.4);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ff1493;
+            position: absolute;
+            animation: confetti-fall 3s linear;
+            z-index: 5;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #ff69b4;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+            transition: all 0.3s ease;
+            z-index: 10000;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            animation: wiggle 0.5s ease;
+        }
+
+        .music-control:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg) scale(1.1); }
+            25% { transform: rotate(-10deg) scale(1.1); }
+            75% { transform: rotate(10deg) scale(1.1); }
+        }
+
+        .music-icon {
+            font-size: 1.5em;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .message {
+                font-size: 1em;
+            }
+
+            .question {
+                font-size: 1.2em;
+            }
+
+            button {
+                padding: 12px 30px;
+                font-size: 1em;
+            }
+
+            .receipt input {
+                max-width: 150px;
+                font-size: 0.9em;
+            }
+
+            .playful-text {
+                font-size: 1.2em;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .music-note {
+            position: absolute;
+            font-size: 20px;
+            animation: music-float 3s ease-in-out;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        @keyframes music-float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-background" id="hearts-bg"></div>
+
+    <div class="container">
+        <div class="content" id="main-content">
+            <h1>Happy Valentine's Day ❤️</h1>
+            <p class="message">
+                Every moment with you feels like magic. I don't need the perfect day, I just need you. 💕
+            </p>
+            <p class="question">Will you be my Valentine?</p>
+            <div class="buttons" id="button-container">
+                <button class="yes-btn" onclick="handleYes()">Yes 💖</button>
+                <button class="no-btn" id="no-btn" onmouseover="moveButton()" onclick="moveButton()">No 😢</button>
+            </div>
+        </div>
+
+        <div class="content hidden" id="success-content">
+            <div class="success-message">
+                <h1>You just made me the happiest person alive! 💘</h1>
+            </div>
+            
+            <div class="receipt">
+                <h2>Official Valentine Receipt 💌</h2>
+                <div class="receipt-item">
+                    <span class="receipt-label">Girlfriend Name:</span>
+                    <input type="text" placeholder="Your beautiful name" id="girlfriend-name">
+                </div>
+                <div class="receipt-item">
+                    <span class="receipt-label">Boyfriend Name:</span>
+                    <input type="text" placeholder="Your lucky guy" id="boyfriend-name">
+                </div>
+                <div class="receipt-item">
+                    <span class="receipt-label">Date:</span>
+                    <span class="receipt-static" id="current-date"></span>
+                </div>
+                <div class="receipt-item">
+                    <span class="receipt-label">Status:</span>
+                    <span class="receipt-static">Officially Dating !! 💖</span>
+                </div>
+                <div class="signature">
+                    ✨ Forever Yours ✨
+                </div>
+                <button class="download-btn" onclick="downloadReceipt()">Download Receipt 💝</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="music-control" onclick="toggleMusic()" title="Play/Pause Music">
+        <span class="music-icon" id="music-icon">🔇</span>
+    </div>
+
+    <!-- Audio element - MUST be in same folder! -->
+    <audio id="bg-music" loop>
+        <source src="dandelion.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        let isPlaying = false;
+        const music = document.getElementById('bg-music');
+        const icon = document.getElementById('music-icon');
+
+        // Set volume
+        music.volume = 0.5;
+
+        // Music control - SIMPLIFIED AND WORKING!
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                icon.textContent = '🔇';
+                isPlaying = false;
+            } else {
+                music.play()
+                    .then(() => {
+                        icon.textContent = '🎵';
+                        isPlaying = true;
+                        createMusicNotes();
+                    })
+                    .catch(() => {
+                        alert('Click the music button again! Sometimes browsers need a second click. 🎵');
+                    });
+            }
+        }
+
+        // Create floating music notes when playing
+        function createMusicNotes() {
+            if (!isPlaying) return;
+            
+            const musicControl = document.querySelector('.music-control');
+            const rect = musicControl.getBoundingClientRect();
+            const note = document.createElement('div');
+            note.className = 'music-note';
+            note.textContent = ['♪', '♫', '🎵', '🎶'][Math.floor(Math.random() * 4)];
+            note.style.left = rect.left + rect.width / 2 + 'px';
+            note.style.top = rect.top + 'px';
+            note.style.color = ['#ff69b4', '#ff1493', '#ffc0cb'][Math.floor(Math.random() * 3)];
+            document.body.appendChild(note);
+
+            setTimeout(() => {
+                note.remove();
+            }, 3000);
+
+            if (isPlaying) {
+                setTimeout(createMusicNotes, 1500);
+            }
+        }
+
+        // Create floating hearts
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts-bg');
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heartsContainer.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 8000);
+            }, 500);
+        }
+
+        // Move No button randomly
+        const playfulMessages = [
+            "Are you sure? 🥺",
+            "Think again 😏",
+            "Nice try 😆",
+            "Come on... 💕",
+            "Really? 🙈",
+            "Don't be shy! 😊"
+        ];
+
+        let messageIndex = 0;
+
+        function moveButton() {
+            const noBtn = document.getElementById('no-btn');
+            const container = document.getElementById('button-container');
+            const containerRect = container.getBoundingClientRect();
+            
+            const maxX = containerRect.width - noBtn.offsetWidth - 20;
+            const maxY = containerRect.height - noBtn.offsetHeight - 20;
+            
+            const randomX = Math.max(0, Math.random() * maxX);
+            const randomY = Math.max(0, Math.random() * maxY);
+            
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            
+            showPlayfulMessage();
+        }
+
+        function showPlayfulMessage() {
+            const existing = document.querySelector('.playful-text');
+            if (existing) existing.remove();
+
+            const message = document.createElement('div');
+            message.className = 'playful-text';
+            message.textContent = playfulMessages[messageIndex];
+            document.body.appendChild(message);
+
+            messageIndex = (messageIndex + 1) % playfulMessages.length;
+
+            setTimeout(() => {
+                message.remove();
+            }, 2000);
+        }
+
+        // Handle Yes button
+        function handleYes() {
+            createConfetti();
+            
+            setTimeout(() => {
+                document.getElementById('main-content').classList.add('hidden');
+                document.getElementById('success-content').classList.remove('hidden');
+                
+                // Set current date
+                const today = new Date();
+                const dateStr = today.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                document.getElementById('current-date').textContent = dateStr;
+            }, 1000);
+        }
+
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['#ff1493', '#ff69b4', '#ff85c1', '#ffc0cb', '#ff0080'];
+            
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-10px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 3000);
+                }, i * 30);
+            }
+        }
+
+        // Download receipt (as image simulation)
+        function downloadReceipt() {
+            const girlfriendName = document.getElementById('girlfriend-name').value || 'My Love';
+            const boyfriendName = document.getElementById('boyfriend-name').value || 'Your Valentine';
+            const date = document.getElementById('current-date').textContent;
+
+            alert(`💝 Receipt saved to your heart! 💝\n\n${girlfriendName} & ${boyfriendName}\n${date}\n\nStatus: Officially Dating ! 💖\n\nForever Yours ✨`);
+        }
+
+        // Initialize
+        createHearts();
+
+        // Position No button initially
+        window.addEventListener('load', () => {
+            const noBtn = document.getElementById('no-btn');
+            noBtn.style.left = '0px';
+            noBtn.style.top = '0px';
+        });
+    </script>
+</body>
+</html>
