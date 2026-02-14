@@ -435,24 +435,46 @@
         </div>
     </div>
 
-    <div class="music-control" onclick="playMusic()" id="music-btn" title="Play Music">
+    <div class="music-control" onclick="toggleMusic()" id="music-btn" title="Play Music">
         <span class="music-icon" id="music-icon">🎵</span>
     </div>
 
     <script>
         let isPlaying = false;
         let audio = null;
+        let audioInitialized = false;
 
-        // Play music function - WORKS ON VERCEL!
-        function playMusic() {
-            const icon = document.getElementById('music-icon');
-            
+        // Initialize audio on first user interaction
+        function initAudio() {
             if (!audio) {
-                // Create audio element dynamically
                 audio = new Audio();
-                audio.src = 'dandelion.mp3'; // Just the filename!
+                // Try multiple possible paths for Vercel
+                audio.src = './dandelion.mp3'; // Same directory
                 audio.loop = true;
                 audio.volume = 0.5;
+                
+                // Preload the audio
+                audio.load();
+                
+                // Add error handler
+                audio.addEventListener('error', function(e) {
+                    console.error('Audio error:', e);
+                    // Try alternative path
+                    audio.src = '/dandelion.mp3';
+                    audio.load();
+                });
+                
+                audioInitialized = true;
+            }
+        }
+
+        // Toggle music function
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            
+            // Initialize audio on first click
+            if (!audioInitialized) {
+                initAudio();
             }
 
             if (isPlaying) {
@@ -460,29 +482,36 @@
                 icon.textContent = '🔇';
                 isPlaying = false;
             } else {
-                audio.play()
-                    .then(() => {
-                        icon.textContent = '🎵';
-                        isPlaying = true;
-                        createMusicNotes();
-                    })
-                    .catch((e) => {
-                        console.log('Music will play on next click');
-                        // Try one more time
-                        setTimeout(() => {
-                            audio.play().then(() => {
-                                icon.textContent = '🎵';
-                                isPlaying = true;
-                                createMusicNotes();
-                            });
-                        }, 200);
-                    });
+                // Attempt to play
+                const playPromise = audio.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise
+                        .then(() => {
+                            icon.textContent = '🎵';
+                            isPlaying = true;
+                            createMusicNotes();
+                        })
+                        .catch((error) => {
+                            console.log('Playback prevented:', error);
+                            // Show user-friendly message
+                            icon.textContent = '🔇';
+                            
+                            // Try again after a small delay
+                            setTimeout(() => {
+                                audio.play()
+                                    .then(() => {
+                                        icon.textContent = '🎵';
+                                        isPlaying = true;
+                                        createMusicNotes();
+                                    })
+                                    .catch(e => {
+                                        console.log('Still cannot play:', e);
+                                    });
+                            }, 100);
+                        });
+                }
             }
-        }
-
-        // Alias for compatibility
-        function toggleMusic() {
-            playMusic();
         }
 
         // Create floating music notes when playing
@@ -631,6 +660,13 @@
             noBtn.style.left = '0px';
             noBtn.style.top = '0px';
         });
+
+        // Initialize audio on any user interaction
+        document.addEventListener('click', function initOnClick() {
+            if (!audioInitialized) {
+                initAudio();
+            }
+        }, { once: true });
     </script>
 </body>
 </html>
